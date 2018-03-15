@@ -1,8 +1,6 @@
-from zope.interface import implements
-
+from scrapy_heroku.utils import get_spider_queues
 from scrapyd.interfaces import ISpiderScheduler
-
-from .utils import get_spider_queues
+from zope.interface import implements
 
 
 class Psycopg2SpiderScheduler(object):
