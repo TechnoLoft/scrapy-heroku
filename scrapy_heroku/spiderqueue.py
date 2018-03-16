@@ -7,7 +7,7 @@ import json
 
 import psycopg2
 from scrapyd.interfaces import ISpiderQueue
-from zope.interface import implements
+from zope.interface import implementer
 
 try:
     from urlparse import urlparse
@@ -129,7 +129,7 @@ class JsonPsycopg2PriorityQueue(Psycopg2PriorityQueue):
         return json.loads(text)
 
 
-@implements(ISpiderQueue)
+@implementer(ISpiderQueue)
 class Psycopg2SpiderQueue(object):
     def __init__(self, config, table='spider_queue'):
         self.q = JsonPsycopg2PriorityQueue(config, table)
