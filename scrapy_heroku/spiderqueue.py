@@ -129,9 +129,8 @@ class JsonPsycopg2PriorityQueue(Psycopg2PriorityQueue):
         return json.loads(text)
 
 
+@implements(ISpiderQueue)
 class Psycopg2SpiderQueue(object):
-    implements(ISpiderQueue)
-
     def __init__(self, config, table='spider_queue'):
         self.q = JsonPsycopg2PriorityQueue(config, table)
 
