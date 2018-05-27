@@ -1,3 +1,4 @@
+# coding=utf-8
 from scrapy_heroku.utils import get_spider_queues
 from scrapyd.poller import QueuePoller
 

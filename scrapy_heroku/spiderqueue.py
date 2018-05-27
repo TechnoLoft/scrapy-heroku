@@ -1,18 +1,12 @@
-try:
-    import cPickle
-except ImportError:
-    import _pickle as cPickle
-
+# coding=utf-8
+import pickle
 import json
 
 import psycopg2
 from scrapyd.interfaces import ISpiderQueue
 from zope.interface import implementer
 
-try:
-    from urlparse import urlparse
-except ImportError:
-    from urllib.parse import urlparse
+from urllib.parse import urlparse
 
 
 class Psycopg2PriorityQueue(object):
@@ -30,15 +24,12 @@ class Psycopg2PriorityQueue(object):
             'port': url.port,
         }
 
-        conn_string = ' '.join('%s=%s' % item for item in args.items())
+        conn_string = ' '.join('{}={}'.format(*item) for item in args.items())
 
         self.conn_string = conn_string
         self.table = table
         self.conn = psycopg2.connect(conn_string)
-        q = "create table if not exists %s " \
-            "(id SERIAL primary key, " \
-            " priority real, " \
-            " message text);" % table
+        q = "create table if not exists %s (id SERIAL primary key,  priority real,  message text);" % table;
         self._execute(q, results=False)
         self.conn.commit()
 
@@ -67,8 +58,7 @@ class Psycopg2PriorityQueue(object):
         self.conn.commit()
 
     def pop(self):
-        q = "select id, message from %s order by priority desc limit 1 for update;" \
-            % self.table
+        q = "select id, message from %s order by priority desc limit 1 for update;" % self.table
         results = self._execute(q)
         if len(results) == 0:
             return None
@@ -100,8 +90,7 @@ class Psycopg2PriorityQueue(object):
         return result
 
     def __iter__(self):
-        q = "select message, priority from %s order by priority desc" % \
-            self.table
+        q = "select message, priority from %s order by priority desc" % self.table
         result = ((self.decode(x), y) for x, y in self._execute(q))
         self.conn.commit()
         return result
@@ -115,10 +104,10 @@ class Psycopg2PriorityQueue(object):
 
 class PicklePsycopg2PriorityQueue(Psycopg2PriorityQueue):
     def encode(self, obj):
-        return memoryview(cPickle.dumps(obj, protocol=2))
+        return memoryview(pickle.dumps(obj, protocol=2))
 
     def decode(self, text):
-        return cPickle.loads(str(text))
+        return pickle.loads(str(text))
 
 
 class JsonPsycopg2PriorityQueue(Psycopg2PriorityQueue):

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# coding=utf-8
 
 from setuptools import find_packages, setup
 
@@ -16,8 +16,11 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     install_requires=[
-        'scrapy',
-        'psycopg2',
+        'scrapyd >= 1.2.0',
+        'scrapy >= 1.5.0',
+        'psycopg2 >= 2.7.4',
+        'twisted >= 18.4.0',
+        'zope.interface >= 4.5.0'
     ],
     setup_requires=[
         'versiontools >= 1.8',

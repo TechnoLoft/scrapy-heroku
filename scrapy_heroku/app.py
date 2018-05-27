@@ -1,3 +1,4 @@
+# coding=utf-8
 from os import environ
 
 from scrapy_heroku.poller import Psycopg2QueuePoller
@@ -32,8 +33,7 @@ def application(config):
     launcher = Launcher(config, app)
     timer = TimerService(5, poller.poll)
     webservice = TCPServer(http_port, server.Site(Root(config, app)))
-    log.msg("Scrapyd web console available at http://localhost:%s/ (HEROKU)" %
-            http_port)
+    log.msg("Scrapyd web console available at http://localhost:%s/ (HEROKU)" % http_port)
 
     launcher.setServiceParent(app)
     timer.setServiceParent(app)
